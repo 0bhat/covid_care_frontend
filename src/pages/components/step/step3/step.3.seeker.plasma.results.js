@@ -1,6 +1,11 @@
 import { Form, Select , message, Row, Typography,
      Space, Radio, Spin, Input, InputNumber, 
-     Cascader, Result } from 'antd';
+     Cascader, Result, List, Avatar } from 'antd';
+
+
+import InfiniteScroll from 'react-infinite-scroller';
+import styles_this from './step3.seeker.plasma.results.less'
+
 
 
 import React from 'react';
@@ -12,13 +17,14 @@ const {Title} = Typography;
 const { Option } = Select;
 
 
-class Step2SeekerPlasma extends React.Component {
+class Step2SeekerPlasmaResult extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
           fetching: true,
-          data: {},
+          data: [],
           dataLength: -1,
+          hasMore: true,
         }
     }
 
@@ -32,50 +38,15 @@ class Step2SeekerPlasma extends React.Component {
     }
 
     render() {
-        const layout = {
-            labelCol: { span: 8 },
-            wrapperCol: { span: 16 },
-        };
 
-        const bloodGroups = ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-', 'NA'];
+        let listData;
+        console.log(this.state.data);
 
-        const onFormLayoutChange = () => {
-
+        const handleInfiniteOnLoad = (page) => {
+            console.log(this.state.data);
+            this.setState({hasMore: false});
         }
-        const onBloodGrouphange = (e) => {
-            let dat = store.get('seeker');
-            dat.plasma.bloodGroup = e;
-            store.set('seeker', dat);
-        }
-
-        const onNameChange = (e) => {
-            let dat = store.get('seeker');
-            dat.plasma.name = e.target.value;
-            store.set('seeker', dat);
-        }
-
-        const onEmailChange = (e) => {
-            let dat = store.get('seeker');
-            dat.plasma.email = e.target.value;
-            store.set('seeker', dat);
-        }
-
-        const onContactNumberChange = (e) => {
-            let dat = store.get('seeker');
-            dat.plasma.contactNumber = e.target.value;
-            store.set('seeker', dat);
-        }
-
-        const onCityChange = (e) => {
-            let dat = store.get('seeker');
-            dat.plasma.city = e[1];
-            store.set('seeker', dat);
-        }
-
-        function filter(inputValue, path) {
-            return path.some(option => option.label.toLowerCase().indexOf(inputValue.toLowerCase()) > -1);
-          }
-
+        
         return(
             <div className={styles.steps_content}>
                 <Spin spinning={this.state.fetching}>
@@ -86,46 +57,35 @@ class Step2SeekerPlasma extends React.Component {
                     /> :
                     <Space direction="vertical" align="center">
                         <Row>
-                            <Title level={1}>Please enter your details!</Title>
+                            <Title level={1}>We found the following results!</Title>
                         </Row>
                         <Row>
-                            <Form style={{width: 400}} {...layout}>
-                                <Form.Item label="Name">
-                                    <Input placeholder="Enter name" onChange={onNameChange}/>
-                                </Form.Item>
-                                <Form.Item  label="Email">
-                                    <Input placeholder="Enter email" onChange={onEmailChange} />
-                                </Form.Item>
-                                <Form.Item  label="Contact Number">
-                                    <Input placeholder="Enter contact number" onChange={onContactNumberChange} />
-                                </Form.Item>
-                                <Form.Item label="Blood Group">
-                                    <Select
-                                        showSearch
-                                        style={{ textAlign: 'left' }}
-                                        defaultValue={null}
-                                        placeholder="Select Blood Group"
-                                        optionFilterProp="children"
-                                        onChange={onBloodGrouphange}
-                                        filterOption={(input, option) =>
-                                        option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                            <div className={styles_this.demo_infinite_container}>
+                            <InfiniteScroll
+                                initialLoad={false}
+                                pageStart={0}
+                                loadMore={handleInfiniteOnLoad}
+                                hasMore={this.state.hasMore}
+                                useWindow={false}
+                            >
+                                <List
+                                    dataSource={this.state.data}
+                                    renderItem={item => (
+                                    <List.Item key={item.id}>
+                                        <List.Item.Meta
+                                        avatar={
+                                            <Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />
                                         }
-                                    >
-                                        {bloodGroups.map((dat) => {
-                                            return <Option key={dat} value={dat}>{dat}</Option>
-                                        })}                                        
-                                    </Select>
-                                </Form.Item>
-                                <Form.Item label="City">
-                                <Cascader
-                                    options={this.state.cityOptions}
-                                    onChange={onCityChange}
-                                    placeholder="Please select city"
-                                    showSearch={{ filter }}
-                                />
-                                </Form.Item>
-
-                            </Form>
+                                        title={<a href="https://ant.design">{item.donorName}</a>}
+                                        description={item.contactNumber}
+                                        />
+                                        <div>Content</div>
+                                    </List.Item>
+                                    )}
+                                >
+                                </List>
+                            </InfiniteScroll>
+                            </div>
                         </Row>
                     </Space>
                     } 
@@ -135,4 +95,4 @@ class Step2SeekerPlasma extends React.Component {
     }
 }
 
-export default Step2SeekerPlasma;
+export default Step2SeekerPlasmaResult;
