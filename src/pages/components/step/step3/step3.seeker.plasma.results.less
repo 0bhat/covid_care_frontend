@@ -1,15 +1,49 @@
 .demo_infinite_container {
-    height: 300px;
-    padding: 8px 24px;
+    height: 50vh;
     overflow: auto;
+    padding: 20px;
     border: 1px solid #e8e8e8;
-    border-radius: 4px;
-    width: 600px;
+    width: 700px;
+    background-color: rgb(153, 189, 189);
+}
+
+.content_div {
+    text-align: left;
+    overflow: scroll;
+}
+
+.card_result {
+    width: 100%;
+    margin-bottom: 10px;
 }
 
 @media (max-width: 768px) {
     .demo_infinite_container {
-        width: 300px;
+        width: 590px;
+    }
+}
+
+@media (max-width: 596px) {
+    .demo_infinite_container {
+        width: 100%;
+    }
+
+    .card_result_row {
+        width: 100%;
+    }
+
+    .result_space {
+        width: 100%;
+    }
+
+    .spin {
+        width: 100%;
+    }
+
+    .card_result {
+        font-size: small;
+        width: 100%;
+        margin-bottom: 10px;
     }
 }
   

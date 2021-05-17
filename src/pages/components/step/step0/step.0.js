@@ -22,6 +22,10 @@ const Step0 = (props) => {
             }
         }
     }
+    let defaultValue = false;
+    if(store.get("donor")) { defaultValue = 'donor';}
+    if(store.get("seeker")) { defaultValue = 'seeker';}
+    if(store.get("seller")) { defaultValue = 'seller';}
     return (
         <div className={styles.steps_content}>
             <Space direction="vertical" align="center">
@@ -29,7 +33,7 @@ const Step0 = (props) => {
                         <Title level={1}>Are you a Donor, Seeker or Seller?</Title>
                     </Row>
                     <Row>
-                    <Radio.Group defaultValue={store.get("step0") || ''} onChange={onSelect} size="large" buttonStyle="solid">
+                    <Radio.Group defaultValue={defaultValue || ''} onChange={onSelect} size="large" buttonStyle="solid">
                         <Radio.Button value="donor">Donor</Radio.Button>
                         <Radio.Button value="seeker">Seeker</Radio.Button>
                         <Radio.Button value="seller">Seller</Radio.Button>

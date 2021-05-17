@@ -287,15 +287,15 @@ class MyStep extends React.Component {
                     }
                   }
 
-
+                  break;
                 }
-
-                break;
               }
 
               break;
             }
-          }            
+          }  
+          
+          
           ++cur;
         this.setState({current: cur});
       };
@@ -305,6 +305,11 @@ class MyStep extends React.Component {
         --cur;
         this.setState({current: cur});
         };
+
+      const startOver = () => {
+        store.clearAll();
+        this.setState({current: 0});
+      }
   
       return (
         <div className={styles.main_div}>
@@ -321,11 +326,11 @@ class MyStep extends React.Component {
             </Button>
           )}
           {current === steps.length - 1 && (
-            <Button type="primary" onClick={() => message.success('Processing complete!')}>
-              Submit
+            <Button type="primary" onClick={startOver}>
+              Start Over
             </Button>
           )}
-          {current > 0 && (
+          {(current > 0 && current < steps.length - 1) && (
             <Button style={{ margin: '0 8px' }} onClick={() => prev()}>
               Previous
             </Button>

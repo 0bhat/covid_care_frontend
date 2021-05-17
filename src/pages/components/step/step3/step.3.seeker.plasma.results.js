@@ -1,6 +1,7 @@
 import { Form, Select , message, Row, Typography,
      Space, Radio, Spin, Input, InputNumber, 
-     Cascader, Result, List, Avatar } from 'antd';
+     Cascader, Result, List, Avatar,
+    Card, Tag, Descriptions  } from 'antd';
 
 
 import InfiniteScroll from 'react-infinite-scroller';
@@ -15,6 +16,32 @@ import axios from 'axios';
 
 const {Title} = Typography;
 const { Option } = Select;
+const { Meta } = Card;
+
+
+
+
+//extra details card
+const DetailsCard = (props) => {
+    return (
+        <Descriptions size="small" style={{marginTop: "20px"}} title="Donor Details">
+            <Descriptions.Item label="Blood Group">{props.bloodGroup}</Descriptions.Item>
+            <Descriptions.Item label="Contact No.">{props.contactNumber}</Descriptions.Item>
+            <Descriptions.Item label="City">{props.city}</Descriptions.Item>
+            <Descriptions.Item label="Vaccinated">{props.vaccinated}</Descriptions.Item>
+            <Descriptions.Item label="Verified On">{props.verifiedOn}</Descriptions.Item>
+            <Descriptions.Item label="Extra Remarks">{props.remarks}</Descriptions.Item>
+        </Descriptions>
+    )
+}
+
+const ListDiscription = (props) => {
+    return (
+        <div className={styles_this.list_desc_list}>
+            Date of Covid-Recovery: {props.dateOfCovidRecovery}
+        </div>
+    )
+}
 
 
 class Step2SeekerPlasmaResult extends React.Component {
@@ -38,10 +65,6 @@ class Step2SeekerPlasmaResult extends React.Component {
     }
 
     render() {
-
-        let listData;
-        console.log(this.state.data);
-
         const handleInfiniteOnLoad = (page) => {
             console.log(this.state.data);
             this.setState({hasMore: false});
@@ -49,17 +72,17 @@ class Step2SeekerPlasmaResult extends React.Component {
         
         return(
             <div className={styles.steps_content}>
-                <Spin spinning={this.state.fetching}>
+                <Spin className={styles_this.spin} spinning={this.state.fetching}>
                     {this.state.dataLength == 0 ? 
                     <Result
                         title="No donor found!"
-                        subTitle="But please be asured that you will be intimidated as soon as we find a donor!"
+                        subTitle="But please be asured that you will be intimated as soon as we find a donor!"
                     /> :
-                    <Space direction="vertical" align="center">
+                    <Space className={styles_this.result_space} direction="vertical" align="center">
                         <Row>
-                            <Title level={1}>We found the following results!</Title>
+                            <Title level={5}>We found the following results!</Title>
                         </Row>
-                        <Row>
+                        <Row className={styles_this.card_result_row}>
                             <div className={styles_this.demo_infinite_container}>
                             <InfiniteScroll
                                 initialLoad={false}
@@ -68,22 +91,20 @@ class Step2SeekerPlasmaResult extends React.Component {
                                 hasMore={this.state.hasMore}
                                 useWindow={false}
                             >
-                                <List
-                                    dataSource={this.state.data}
-                                    renderItem={item => (
-                                    <List.Item key={item.id}>
-                                        <List.Item.Meta
-                                        avatar={
-                                            <Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />
-                                        }
-                                        title={<a href="https://ant.design">{item.donorName}</a>}
-                                        description={item.contactNumber}
-                                        />
-                                        <div>Content</div>
-                                    </List.Item>
-                                    )}
-                                >
-                                </List>
+                                {this.state.data.map((dat) => {
+                                    return (
+                                        <Card key={dat.id} className={styles_this.card_result}>
+                                            <Meta
+                                            avatar={
+                                                dat.type == 'free' ? <Tag color="green">Free</Tag> : <Tag color="red">Paid</Tag>
+                                            }
+                                            title={dat.donorName}
+                                            description={<ListDiscription {...dat}></ListDiscription>}
+                                            />
+                                            <DetailsCard {...dat}></DetailsCard>
+                                        </Card>  
+                                    )      
+                                })}
                             </InfiniteScroll>
                             </div>
                         </Row>

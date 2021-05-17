@@ -5,6 +5,7 @@ import { Form, Select , message, Row, Typography,
 import React from 'react';
 import store from 'store';
 import styles from '../step.less'
+import styles_this from './step2.seeker.plasma.less'
 import axios from 'axios';
 
 const {Title} = Typography;
@@ -114,7 +115,7 @@ class Step2SeekerPlasma extends React.Component {
                             <Title level={1}>Please enter your details!</Title>
                         </Row>
                         <Row>
-                            <Form style={{width: 400}} {...layout}>
+                            <Form className={styles_this.form} {...layout}>
                                 <Form.Item label="Name">
                                     <Input placeholder="Enter name" onChange={onNameChange}/>
                                 </Form.Item>
