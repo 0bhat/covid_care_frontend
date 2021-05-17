@@ -16,7 +16,7 @@ class Step1Seeker extends React.Component {
           data: [],
         }
 
-        if(store.get('step1_seeker_plasma_or_other') == 'other') {
+        if(store.get('seeker').other) {
             this.state.showOthers = 'block';
         } else {
             this.state.showOthers = 'none';
@@ -36,6 +36,9 @@ class Step1Seeker extends React.Component {
             dat.other.service = val;
             store.set('seeker', dat);
         }
+
+        const defaultValueRadio = store.get('seeker').plasma ? 'plasma' : (store.get('seeker').other ? 'other' : null);
+        const defaultValueSelect = store.get('seeker').other ? (store.get('seeker').other.service ? store.get('seeker').other.service : null) : null;
 
         const onRadioSelect = (e) => {
             store.set('seeker', {});
@@ -64,7 +67,7 @@ class Step1Seeker extends React.Component {
                             <Title level={1}>What are you looking for?</Title>
                         </Row>
                         <Row>
-                            <Radio.Group defaultValue={store.get("step1_seeker_plasma_or_other") || ''} onChange={onRadioSelect} size="large" buttonStyle="solid">
+                            <Radio.Group defaultValue={defaultValueRadio} onChange={onRadioSelect} size="large" buttonStyle="solid">
                                 <Radio.Button value="plasma">Plasma</Radio.Button>
                                 <Radio.Button value="other">Others</Radio.Button>
                             </Radio.Group>
@@ -73,7 +76,7 @@ class Step1Seeker extends React.Component {
                             <Select
                                 showSearch
                                 style={{ width: 400 }}
-                                defaultValue={store.get('step1_seeker_other_id') || null}
+                                defaultValue={defaultValueSelect}
                                 placeholder="Type a service"
                                 optionFilterProp="children"
                                 onChange={onChange}

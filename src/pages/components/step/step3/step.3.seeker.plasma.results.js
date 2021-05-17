@@ -1,7 +1,7 @@
 import { Form, Select , message, Row, Typography,
      Space, Radio, Spin, Input, InputNumber, 
      Cascader, Result, List, Avatar,
-    Card, Tag, Descriptions  } from 'antd';
+    Card, Tag, Descriptions, Popover  } from 'antd';
 
 
 import InfiniteScroll from 'react-infinite-scroller';
@@ -30,7 +30,13 @@ const DetailsCard = (props) => {
             <Descriptions.Item label="City">{props.city}</Descriptions.Item>
             <Descriptions.Item label="Vaccinated">{props.vaccinated}</Descriptions.Item>
             <Descriptions.Item label="Verified On">{props.verifiedOn}</Descriptions.Item>
-            <Descriptions.Item label="Extra Remarks">{props.remarks}</Descriptions.Item>
+            <Descriptions.Item label="Remarks">
+                <Popover content={props.remarks} title="Remarks" trigger="hover">
+                    <Popover content={props.remarks} title="Remarks" trigger="click">
+                        <span style={{color: 'blue'}}>{props.remarks.slice(0, 11)}</span>
+                    </Popover>
+                </Popover>
+            </Descriptions.Item>
         </Descriptions>
     )
 }
@@ -76,7 +82,7 @@ class Step2SeekerPlasmaResult extends React.Component {
                     {this.state.dataLength == 0 ? 
                     <Result
                         title="No donor found!"
-                        subTitle="But please be asured that you will be intimated as soon as we find a donor!"
+                        subTitle="But please be assured that you will be intimated as soon as we find a donor!"
                     /> :
                     <Space className={styles_this.result_space} direction="vertical" align="center">
                         <Row>

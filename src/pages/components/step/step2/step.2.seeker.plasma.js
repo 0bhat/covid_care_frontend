@@ -112,7 +112,7 @@ class Step2SeekerPlasma extends React.Component {
                 <Spin spinning={this.state.fetching}>
                     <Space direction="vertical" align="center">
                         <Row>
-                            <Title level={1}>Please enter your details!</Title>
+                            <Title level={3}>Please enter your details!</Title>
                         </Row>
                         <Row>
                             <Form className={styles_this.form} {...layout}>
