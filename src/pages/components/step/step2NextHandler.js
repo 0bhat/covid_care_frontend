@@ -7,6 +7,8 @@ function validateEmail(email) {
 }
 let pattern = new RegExp("^[0-9]{10}$");
 
+let file_return_value = 0;
+
 const step2_seeker_case_handler = (key_g) => {
     let dat = store.get(key_g);
     
@@ -56,7 +58,7 @@ const step2_seeker_case_handler = (key_g) => {
       }
 
       if(invalid.length > 0 ) {
-        return;
+        return 1;
       }
     }
 }
@@ -68,10 +70,12 @@ const step2NextHandler = (props) => {
     });
     switch(key_g) {
       case 'seeker': {
-          step2_seeker_case_handler(key_g)
+        file_return_value = step2_seeker_case_handler(key_g)
           break;
       }
     }
+
+    return file_return_value;
 }
 
 export default step2NextHandler;

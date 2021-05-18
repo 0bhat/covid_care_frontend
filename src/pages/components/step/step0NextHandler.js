@@ -8,7 +8,7 @@ const step0NextHandler = (props) => {
     })
     if(i == 0) {
       message.error("Please select an option!");
-      return;
+      return 1;
     }
 }
 

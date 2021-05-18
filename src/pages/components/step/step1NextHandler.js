@@ -1,14 +1,16 @@
 import store from 'store';
 import { message  } from 'antd';
 
+let file_return_value = 0;
+
 const step1_seeker_case_handler = (key_g) => {
     let dat = store.get(key_g);
     if(Object.keys(dat).length == 0) {
       message.error("Please select an option!");
-      return;
+      return 1;
     } else if(dat.other && dat.other.service == undefined) {
       message.error("Please type a service!");
-      return;
+      return 1;
     }
 }
 
@@ -19,10 +21,12 @@ const step1NextHandler = (props) => {
     });
     switch(key_g) {
       case 'seeker': {
-        step1_seeker_case_handler(key_g);
+        file_return_value = step1_seeker_case_handler(key_g);
         break;
       }
     }
+
+    return file_return_value;
 }
 
 export default step1NextHandler;

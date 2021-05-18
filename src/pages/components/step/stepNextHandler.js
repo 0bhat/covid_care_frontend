@@ -1,9 +1,8 @@
-import store from 'store';
-import { message  } from 'antd';
-
 import step0NextHandler from './step0NextHandler'
 import step1NextHandler from './step1NextHandler'
 import step2NextHandler from './step2NextHandler'
+
+let return_from_next = 0;
 
 
 let nextHandler = (that) => {
@@ -11,22 +10,22 @@ let nextHandler = (that) => {
     let cur = thiss.state.current;
     switch(cur) {
       case 0: {
-          step0NextHandler();
+        return_from_next = step0NextHandler();
           break;
       }
       case 1: {
-          step1NextHandler();
+        return_from_next = step1NextHandler();
           break;
       }
       case 2: {
-          step2NextHandler();
+        return_from_next = step2NextHandler();
         break;
       }
-    }  
-    
-    
-    ++cur;
-    thiss.setState({current: cur});
+    }
+    if(!return_from_next) {
+        ++cur;
+        thiss.setState({current: cur});
+    }
 }
 
 export default nextHandler;
