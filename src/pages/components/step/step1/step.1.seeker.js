@@ -14,6 +14,8 @@ class Step1Seeker extends React.Component {
         this.state = {
           fetching: true,
           data: [],
+          defaultValueRadio: store.get('seeker').plasma ? 'plasma' : (store.get('seeker').other ? 'other' : undefined),
+          selectValue: store.get('seeker').other ? (store.get('seeker').other.service ? store.get('seeker').other.service : []) : [],
         }
 
         if(store.get('seeker').other) {
@@ -30,35 +32,33 @@ class Step1Seeker extends React.Component {
         })
     }
 
+    onChange = (val) => {
+        let dat = store.get('seeker');
+        dat.other.service = val;
+        this.setState({selectValue: val});
+        store.set('seeker', dat);
+    }      
+
+    onRadioSelect = (e) => {
+        store.set('seeker', {});
+        let dat = {};
+        switch(e.target.value.toString()) {
+            case 'plasma': {
+                dat.plasma = {};
+                store.set('seeker', dat);
+                this.setState({showOthers: 'none', selectValue: []});
+                break;
+            }
+            case 'other': {
+                dat.other = {};
+                store.set('seeker', dat);
+                this.setState({showOthers: 'block', selectValue: []});
+                break;
+            }
+        }          
+    }
+
     render() {
-        const onChange = (val) => {
-            let dat = store.get('seeker');
-            dat.other.service = val;
-            store.set('seeker', dat);
-        }
-
-        const defaultValueRadio = store.get('seeker').plasma ? 'plasma' : (store.get('seeker').other ? 'other' : null);
-        const defaultValueSelect = store.get('seeker').other ? (store.get('seeker').other.service ? store.get('seeker').other.service : null) : null;
-
-        const onRadioSelect = (e) => {
-            store.set('seeker', {});
-            let dat = {};
-            switch(e.target.value.toString()) {
-                case 'plasma': {
-                    this.setState({showOthers: 'none'});
-                    dat.plasma = {};
-                    store.set('seeker', dat);
-                    break;
-                }
-                case 'other': {
-                    this.setState({showOthers: 'block'});
-                    dat.other = {};
-                    store.set('seeker', dat);
-                    break;
-                }
-            }          
-        }
-
         return(
             <div className={styles.steps_content}>
                 <Spin spinning={this.state.fetching}>
@@ -67,7 +67,7 @@ class Step1Seeker extends React.Component {
                             <Title level={1}>What are you looking for?</Title>
                         </Row>
                         <Row>
-                            <Radio.Group defaultValue={defaultValueRadio} onChange={onRadioSelect} size="large" buttonStyle="solid">
+                            <Radio.Group defaultValue={this.state.defaultValueRadio} onChange={this.onRadioSelect} size="large" buttonStyle="solid">
                                 <Radio.Button value="plasma">Plasma</Radio.Button>
                                 <Radio.Button value="other">Others</Radio.Button>
                             </Radio.Group>
@@ -75,14 +75,14 @@ class Step1Seeker extends React.Component {
                         <Row style={{display: this.state.showOthers}}>
                             <Select
                                 showSearch
+                                allowClear
+                                mode="multiple"
                                 style={{ width: 400 }}
-                                defaultValue={defaultValueSelect}
+                                defaultValue={this.state.defaultValueSelect}
+                                value={this.state.selectValue}
                                 placeholder="Type a service"
                                 optionFilterProp="children"
-                                onChange={onChange}
-                                // onFocus={onFocus}
-                                // onBlur={onBlur}
-                                // onSearch={onSearch}
+                                onChange={this.onChange}
                                 filterOption={(input, option) =>
                                 option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                                 }

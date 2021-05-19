@@ -8,7 +8,7 @@ const step1_seeker_case_handler = (key_g) => {
     if(Object.keys(dat).length == 0) {
       message.error("Please select an option!");
       return 1;
-    } else if(dat.other && dat.other.service == undefined) {
+    } else if(dat.other && (dat.other.service == undefined || dat.other.service.length === 0) && (Object.keys(dat).length !== 2)) {
       message.error("Please type a service!");
       return 1;
     }

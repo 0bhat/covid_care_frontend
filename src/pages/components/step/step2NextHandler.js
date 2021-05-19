@@ -12,6 +12,7 @@ let file_return_value = 0;
 const step2_seeker_case_handler = (key_g) => {
     let dat = store.get(key_g);
     
+    //if plasma is selected
     if(dat.plasma) {
       let invalid = [];
       if(!dat.plasma.name) invalid.push('name');
@@ -61,6 +62,65 @@ const step2_seeker_case_handler = (key_g) => {
         return 1;
       }
     }
+    /////////////////
+    ////////////////////
+
+
+    //if other is selected
+    if(dat.other) {
+      if(Object.keys(dat.other.formData).length === 0) {
+        message.error("Please fill the form below!");
+        return 1;
+      }
+
+      let invalid = [];
+      if(!dat.other.formData.name) invalid.push('name');
+      if(dat.other.formData.email) {
+        if(!validateEmail(dat.other.formData.email)) {
+          invalid.push('email');
+        }
+      } else {
+        invalid.push('email');
+      }
+      if(dat.other.formData.contactNumber) {
+        if(!pattern.test(dat.other.formData.contactNumber)) {
+          invalid.push('contactNumber');
+        }
+      } else  {
+        invalid.push('contactNumber');
+      }
+      if(!dat.other.formData.city) invalid.push('city');
+
+
+      for(let i of invalid) {
+        switch(i) {
+          case 'name': {
+            message.error("Please enter your name!");
+            break;
+          }
+          case 'email': {
+            message.error("Please enter a valid email!");
+            break;
+          }
+          case 'contactNumber': {
+            message.error("Please enter a 10 digit contact number!");
+            break;
+          }
+          case 'city': {
+            message.error("Please select city!");
+            break;
+          }
+        }
+      }
+
+
+      if(invalid.length > 0 ) {
+        return 1;
+      }
+
+    }
+    ///////
+    ////////
 }
 
 const step2NextHandler = (props) => {

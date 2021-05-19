@@ -8,7 +8,9 @@ import nextHandler from './stepNextHandler'
 import Step0 from './step0/step.0'
 import Step1Seeker from './step1/step.1.seeker'
 import Step2SeekerPlasma from './step2/step.2.seeker.plasma'
+import Step2SeekerOther from './step2/step.2.seeker.other'
 import Step3SeekerPlasmaResults from './step3/step.3.seeker.plasma.results'
+import Step3SeekerOtherResults from './step3/step.3.seeker.other.results'
 
 
 const { Step } = Steps;
@@ -66,7 +68,7 @@ const step2_render = (props) => {
             break;
           }
           case 'other': {
-            ret = 'Under Construction';
+            ret = <Step2SeekerOther {...props}></Step2SeekerOther>;
             break;
           }
         }
@@ -123,7 +125,7 @@ const step3_render = (props) => {
             break;
           }
           case 'other': {
-            ret = 'Under Construction';
+            ret = <Step3SeekerOtherResults {...props}></Step3SeekerOtherResults>;
             break;
           }
         }
